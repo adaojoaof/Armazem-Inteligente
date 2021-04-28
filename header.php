@@ -10,7 +10,7 @@
 
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <script src="https://kit.fontawesome.com/81a361d601.js" crossorigin="anonymous"></script>
 
     <!-- CSS Files -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -19,15 +19,10 @@
 </head>
 <body>
 <div class="wrapper">
-        <div class="sidebar" data-image="assets/img/sidebar.jpg" data-color="orange">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
-
-        Tip 2: you can also add an image using data-image tag
-    -->
-    <div class="sidebar-wrapper">
+    <div class="sidebar" data-image="assets/img/sidebar.jpg" data-color="orange">
+        <div class="sidebar-wrapper">
                 <div class="logo">
-                    <a href="http://www.creative-tim.com" class="simple-text">
+                    <a href="dashboard.php" class="simple-text">
                         <img src="assets/img/logo.png" class="img-fluid" alt="">
                     </a>
                 </div>
