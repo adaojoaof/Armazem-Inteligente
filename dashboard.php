@@ -154,61 +154,54 @@
    <div class="col-12">
       <div class="card-stats card">
       <div class="card-header">
-                <h4 class="card-title">Tabela de Sensores</h4> 
-                <p class="card-category">Estado em Tempo Real de cada sensor</p>
+                <h4 class="card-title">Prateleiras</h4> 
+                <p class="card-category">Estado de Cada Prateleira do Armazém</p>
             </div>
          <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover table-striped">
                     <thead>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Salary</th>
-                        <th>Country</th>
-                        <th>City</th>
+                        <th>Prateleira</th>
+                        <th>Localização</th>
+                        <th>Produto</th>
+                        <th>Stock</th>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Dakota Rice</td>
-                            <td>$36,738</td>
-                            <td>Niger</td>
-                            <td>Oud-Turnhout</td>
+                            <td>Setor A</td>
+                            <td>Salsichas</td>
+                            <td><span class="badge badge-pill badge-success">OK</span></td>
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>Minerva Hooper</td>
-                            <td>$23,789</td>
-                            <td>Curaçao</td>
-                            <td>Sinaai-Waas</td>
+                           <td>2</td>
+                            <td>Setor B</td>
+                            <td>Papel Higiénico</td>
+                            <td><span class="badge badge-pill badge-success">OK</span></td>
                         </tr>
                         <tr>
-                            <td>3</td>
-                            <td>Sage Rodriguez</td>
-                            <td>$56,142</td>
-                            <td>Netherlands</td>
-                            <td>Baileux</td>
+                           <td>3</td>
+                            <td>Setor A</td>
+                            <td>Palitos</td>
+                            <td><span class="badge badge-pill badge-danger">Sem Stock</span></td>
                         </tr>
                         <tr>
-                            <td>4</td>
-                            <td>Philip Chaney</td>
-                            <td>$38,735</td>
-                            <td>Korea, South</td>
-                            <td>Overland Park</td>
+                           <td>4</td>
+                            <td>Setor A</td>
+                            <td>Massas</td>
+                            <td><span class="badge badge-pill badge-success">OK</span></td>
                         </tr>
                         <tr>
-                            <td>5</td>
-                            <td>Doris Greene</td>
-                            <td>$63,542</td>
-                            <td>Malawi</td>
-                            <td>Feldkirchen in Kärnten</td>
+                           <td>5</td>
+                            <td>Setor C</td>
+                            <td>Arroz</td>
+                            <td><span class="badge badge-pill badge-warning">Sem dados</span></td>
                         </tr>
                         <tr>
-                            <td>6</td>
-                            <td>Mason Porter</td>
-                            <td>$78,615</td>
-                            <td>Chile</td>
-                            <td>Gloucester</td>
+                           <td>6</td>
+                            <td>Setor A</td>
+                            <td>Batatas Fritas</td>
+                            <td><span class="badge badge-pill badge-success">OK</span></td>
                         </tr>
                     </tbody>
                 </table>
