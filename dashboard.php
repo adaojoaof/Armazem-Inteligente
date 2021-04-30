@@ -1,6 +1,26 @@
 <?php
     $pageTitle="Dashboard";
     $activePage="dashboard";
+	
+	
+	
+	
+	$valor_temperatura = file_get_contents("api/files/armazem/temperatura/valor.txt");
+	$valor_humedad = file_get_contents("api/files/armazem/humidade/valor.txt");
+	$valor_luminosidade= file_get_contents("api/files/armazem/luminosidade/valor.txt");
+	
+	
+	$valor_porta_principal = file_get_contents("api/files/armazem/porta_principal/valor.txt");
+	$valor_porta_carga = file_get_contents("api/files/armazem/porta_carga/valor.txt");
+	$valor_porta_descarga = file_get_contents("api/files/armazem/porta_descargas/valor.txt");
+	
+	$valor_camara = file_get_contents("api/files/armazem/camara/valor.txt");
+	$valor_sensores = file_get_contents("api/files/armazem/sensores/valor.txt");
+	
+	
+	$valor_internet = file_get_contents("api/files/armazem/internet/valor.txt");
+	$valor_error = file_get_contents("api/files/armazem/error/valor.txt");
+	
 ?>
 <?php include "header.php"; ?>
 
@@ -15,15 +35,32 @@
             <div class="card-body">
                 <div class="numbers">
                     <p class="card-category">Portão Principal</p>
-                    <h4 class="card-title"> <i class="text-success fas fa-lock-open"></i> Aberto</h4>
-                </div>
+                    <h4 class="card-title">
+					<?php if($valor_porta_principal == 1){ ?> 	
+						<i class="text-success fas fa-lock-open"></i> Aberto</h4>
+					<?php }else{ ?>
+						<i class="text-danger fas fa-lock"></i> fechado</h4>
+					<?php }?>
+				</div>
                 <div class="numbers">
                     <p class="card-category">Cargas</p>
-                    <h4 class="card-title"> <i class="text-danger fas fa-lock"></i> Fechado</h4>
+                    <h4 class="card-title"> 
+						<?php if($valor_porta_carga == 1){ ?> 	
+						<i class="text-success fas fa-lock-open"></i> Aberto</h4>
+					<?php }else{ ?>
+						<i class="text-danger fas fa-lock"></i> fechado</h4>
+					<?php }?>
+					
                 </div>
                 <div class="numbers">
                     <p class="card-category">Descargas</p>
-                    <h4 class="card-title"> <i class="text-danger fas fa-lock"></i> Fechado</h4>
+                    <h4 class="card-title"> 	
+					<?php if($valor_porta_descarga == 1){ ?> 	
+						<i class="text-success fas fa-lock-open"></i> Aberto</h4>
+					<?php }else{ ?>
+						<i class="text-danger fas fa-lock"></i> fechado</h4>
+					<?php }?>
+					
                 </div>
             </div>
             <div class="card-footer">
@@ -46,7 +83,7 @@
                <div class="col-7">
                   <div class="numbers">
                      <p class="card-category">Temperatura</p>
-                     <h4 class="card-title">18 Cº</h4>
+                     <h4 class="card-title"><?php echo $valor_temperatura?>Cº</h4>
                   </div>
                </div>
             </div>
@@ -57,7 +94,7 @@
                <div class="col-7">
                   <div class="numbers">
                      <p class="card-category">Humidade</p>
-                     <h4 class="card-title">80%</h4>
+                     <h4 class="card-title"><?php echo $valor_humedad?>%</h4>
                   </div>
                </div>
             </div>
@@ -68,7 +105,7 @@
                <div class="col-7">
                   <div class="numbers">
                      <p class="card-category">Luminosidade</p>
-                     <h4 class="card-title">200</h4>
+                     <h4 class="card-title"><?php echo $valor_luminosidade?></h4>
                   </div>
                </div>
             </div>
@@ -93,7 +130,12 @@
                <div class="col-7">
                   <div class="numbers">
                      <p class="card-category">Câmera</p>
-                     <h4 class="card-title">ON</h4>
+                     <h4 class="card-title">
+					 <?php if($valor_camara == 1){?>
+					 ON</h4>
+					 <?php } else{ ?>
+					 OFF</h4>
+					 <?php }?>
                   </div>
                </div>
             </div>
@@ -104,7 +146,7 @@
                <div class="col-7">
                   <div class="numbers">
                      <p class="card-category">Sensores</p>
-                     <h4 class="card-title">12</h4>
+                     <h4 class="card-title"><?php echo $valor_sensores?></h4>
                   </div>
                </div>
             </div>
@@ -124,23 +166,54 @@
          <div class="card-body">
          <div class="row">
                <div class="col-5">
-                  <div class="icon-big text-center icon-warning"><i class="fas fa-check-circle text-success"></i></div>
+                  <div class="icon-big text-center icon-warning">
+				  
+				  
+				  <?php if($valor_internet == 1){?>
+				  <i class="fas fa-check-circle text-success"></i></div>
+				  
+				  <?php } else { ?>
+				  <i class="fas fa-exclamation-triangle text-danger"></i></div>
+				  <?php } ?>
+				  
+				  
+				  
+				  
                </div>
                <div class="col-7">
                   <div class="numbers">
                      <p class="card-category">Internet</p>
-                     <h4 class="card-title">OK</h4>
+                     <h4 class="card-title">				 
+					   <?php if($valor_internet == 1){?>
+				
+				  OK</h4>
+				  <?php } else { ?>
+				  
+				  BAD</h4>
+				  <?php } ?>
+					 
+					 </h4>
                   </div>
                </div>
             </div>
             <div class="row">
                <div class="col-5">
-                  <div class="icon-big text-center icon-warning"><i class="fas fa-exclamation-triangle text-danger"></i></div>
+                  <div class="icon-big text-center icon-warning">
+				  
+				  
+				  <?php if($valor_error == 0){?>
+				  <i class="fas fa-check-circle text-success"></i></div>
+				  
+				  <?php } else { ?>
+				  <i class="fas fa-exclamation-triangle text-danger"></i></div>
+				  <?php } ?>
+				  
+				  
                </div>
                <div class="col-7">
                   <div class="numbers">
                      <p class="card-category">Erros</p>
-                     <h4 class="card-title">2</h4>
+                     <h4 class="card-title"><?php echo $valor_error?></h4>
                   </div>
                </div>
             </div>
