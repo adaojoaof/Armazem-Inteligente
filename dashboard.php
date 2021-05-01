@@ -2,7 +2,9 @@
     $pageTitle="Dashboard";
     $activePage="dashboard";
 	
-	
+	//array com os sensores no armazém -> sensores.txt
+	$sensores=file_get_contents("api/files/sensores.txt");
+	$sensores=explode("\n",$sensores);
 	
 	
 	$valor_temperatura = file_get_contents("api/files/armazem/temperatura/valor.txt");
@@ -15,7 +17,7 @@
 	$valor_porta_descarga = file_get_contents("api/files/armazem/porta_descargas/valor.txt");
 	
 	$valor_camara = file_get_contents("api/files/armazem/camara/valor.txt");
-	$valor_sensores = file_get_contents("api/files/armazem/sensores/valor.txt");
+	$valor_sensores = sizeof($sensores);
 	
 	
 	$valor_internet = file_get_contents("api/files/armazem/internet/valor.txt");

@@ -1,0 +1,9 @@
+camara
+error
+humidade
+internet
+luminosidade
+porta_carga
+porta_descargas
+porta_principal
+temperatura
