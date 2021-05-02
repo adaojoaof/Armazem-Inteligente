@@ -23,7 +23,7 @@
     <!-- CSS Files -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="assets/css/light-bootstrap-dashboard.css?v=2.0.0 " rel="stylesheet" />
-
+    <link rel="stylesheet" href="assets/css/custom.css">
 </head>
 <body>
 <div class="wrapper">
@@ -60,7 +60,7 @@
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#pablo"> <?php if(isset($pageTitle)) echo $pageTitle; ?> </a>
+                    <a class="navbar-brand" href="<?php $current_url = explode("?", $_SERVER['REQUEST_URI']); echo $current_url[0] ;?>"> <?php if(isset($pageTitle)) echo $pageTitle; ?> </a>
                     <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-bar burger-lines"></span>
                         <span class="navbar-toggler-bar burger-lines"></span>
@@ -69,8 +69,8 @@
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="nav navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a href="#" class="nav-link" data-toggle="dropdown">
-                                    <span class="d-lg-none">Dashboard</span>
+                                <a href="<?php $current_url = explode("?", $_SERVER['REQUEST_URI']); echo $current_url[0] ;?>" class="nav-link" data-toggle="dropdown">
+                                    <span class="d-lg-none"><?php if(isset($pageTitle)) echo $pageTitle; ?></span>
                                 </a>
                             </li>
                         </ul>

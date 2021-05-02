@@ -1,9 +1,9 @@
-camara
-error
-humidade
-internet
-luminosidade
-porta_carga
-porta_descargas
-porta_principal
-temperatura
+camara:Câmara
+error:Erros
+humidade:Humidade
+internet:Internet
+luminosidade:Luminosidade
+porta_carga:Portão de Cargas
+porta_descargas:Portão de Descargas
+porta_principal:Portão Principal
+temperatura:Temperatura
