@@ -41,7 +41,7 @@
     <link rel="icon" type="image/png" href="assets/img/icon.png">
     <title>Login | Warehouse - IT technologies</title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/custom-login.css">
 </head>
 <body class="login-page">
     <div class="container-fluid">
