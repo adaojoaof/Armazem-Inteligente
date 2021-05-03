@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="apple-touch-icon" sizes="76x76" href="assets/img/icon.png">
     <link rel="icon" type="image/png" href="assets/img/icon.png">
-    <meta http-equiv="refresh" content="5">
+    <!-- <meta http-equiv="refresh" content="5"> -->
     <title><?= $pageTitle ?> | Warehouse - IT technologies</title>
 
     <!--     Fonts and icons     -->
@@ -47,8 +47,8 @@
                             <p>Histórico</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">
+                    <li class="nav-item <?= $activePage=="definicoes"?"active":""?>">
+                        <a class="nav-link" href="definicoes.php">
                             <i class="nc-icon nc-settings-gear-64"></i>
                             <p>Definições</p>
                         </a>

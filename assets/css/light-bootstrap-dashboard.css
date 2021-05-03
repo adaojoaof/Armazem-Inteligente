@@ -1647,7 +1647,6 @@ fieldset[disabled] .form-control {
 .alert {
     border: 0;
     border-radius: 0;
-    color: #FFFFFF;
     padding: 10px 15px;
     font-size: 14px;
 }
@@ -1727,10 +1726,6 @@ fieldset[disabled] .form-control {
 
 .alert-info {
     background-color: #63d8f1;
-}
-
-.alert-success {
-    background-color: #a1e82c;
 }
 
 .alert-warning {
@@ -2949,7 +2944,6 @@ Copyright (c) 2015 Daniel Eden
 
 .card-stats .card-body .numbers {
     font-size: 1.8rem;
-    margin-left: 20px;
     margin-bottom: 10px;
 }
 

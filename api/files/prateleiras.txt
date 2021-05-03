@@ -1,0 +1,6 @@
+prt1:Papel Higiénico
+prt2:Atum
+prt3:Salsicha
+prt4:Bolachas
+prt5:Gomas
+prt6:Esparguete

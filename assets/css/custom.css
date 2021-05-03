@@ -8,3 +8,42 @@
     color: #6d6d6d;
     font-size: 15px;
 }
+
+.col-form-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0 !important;
+    font-size: 85% !important;
+}
+
+.btn-primary{
+    background-color: #f89a57;
+    border-color: #ffe5d2;
+    color: white;
+}
+.btn-primary:hover{
+    background-color: #f89a57 !important;
+    border-color: #ffe5d2 !important;
+    color: white !important;
+}
+.btn-primary:active{
+    background-color: #f89a57 !important;
+    border-color: #ffe5d2 !important;
+    color: white !important;
+}
+.btn-primary:focus{
+    background-color: #f89a57 !important;
+    border-color: #ffe5d2 !important;
+    color: white !important;
+    box-shadow: none;
+}
+
+.pratelerias-hora{
+    font-size: 11px;
+    color: #adadad;
+}
+
+.dashboard-cards-hora{
+    font-size: 11px;
+    font-weight: 200;
+}
