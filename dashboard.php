@@ -293,10 +293,6 @@
                 </table>
             </div>
          </div>
-         <div class="card-footer">
-         <hr>
-                <div class="stats"><i class="fas fa-redo mr-1"></i> 2021/04/28 15:00:00</div>
-         </div>
       </div>
    </div>
 </div>

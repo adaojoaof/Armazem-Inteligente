@@ -1,4 +1,4 @@
-prt1:Papel Higiénico
+prt1:Papel
 prt2:Atum
 prt3:Salsicha
 prt4:Bolachas
