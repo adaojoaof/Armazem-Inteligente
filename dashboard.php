@@ -55,9 +55,9 @@
                   <div class="col-4">
                      <div class="icon-big text-center icon-warning">
                         <?php if($valor_porta_principal == 1){ ?> 	
-                           <i class="text-success fas fa-lock-open"></i></h4>
+                           <i class="text-success fas fa-lock-open"></i>
                         <?php }else{ ?>
-                           <i class="text-danger fas fa-lock"></i></h4>
+                           <i class="text-danger fas fa-lock"></i>
                         <?php }?>
                      </div>
                   </div>
@@ -73,9 +73,9 @@
                   <div class="col-4">
                      <div class="icon-big text-center icon-warning">
                         <?php if($valor_porta_carga == 1){ ?> 	
-                           <i class="text-success fas fa-lock-open"></i></h4>
+                           <i class="text-success fas fa-lock-open"></i>
                         <?php }else{ ?>
-                           <i class="text-danger fas fa-lock"></i></h4>
+                           <i class="text-danger fas fa-lock"></i>
                         <?php }?>
                      </div>
                   </div>
@@ -91,9 +91,9 @@
                   <div class="col-4">
                      <div class="icon-big text-center icon-warning">
                         <?php if($valor_porta_descarga == 1){ ?> 	
-                           <i class="text-success fas fa-lock-open"></i></h4>
+                           <i class="text-success fas fa-lock-open"></i>
                         <?php }else{ ?>
-                           <i class="text-danger fas fa-lock"></i></h4>
+                           <i class="text-danger fas fa-lock"></i>
                         <?php }?>
                      </div>
                   </div>
@@ -169,11 +169,12 @@
                   <div class="numbers">
                      <p class="card-category">Câmera</p>
                      <h4 class="card-title">
-                     <?php if($valor_camara == 1){?>
-                     ON</h4>
-                     <?php } else{ ?>
-                     OFF</h4>
-                     <?php }?>
+                        <?php if($valor_camara == 1){?>
+                        ON
+                        <?php } else{ ?>
+                        OFF
+                        <?php }?>
+                     </h4>
                      <p class="dashboard-cards-hora"><?= $hora_camara ?></p>
                   </div>
                </div>
@@ -221,13 +222,13 @@
                      <h4 class="card-title">				 
 					   <?php if($valor_internet == 1){?>
 				
-				  OK</h4>
+				  OK
 				  <?php } else { ?>
 				  
-				  BAD</h4>
+				  BAD
 				  <?php } ?>
+              </h4>
                <p class="dashboard-cards-hora"><?= $hora_internet ?></p>
-					 </h4>
                   </div>
                </div>
             </div>

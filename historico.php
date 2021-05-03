@@ -40,9 +40,11 @@
                                 <div class="table-responsive">
                                     <table class="table table-hover table-striped">
                                         <thead>
-                                            <th>Data</th>
-                                            <th>Hora</th>
-                                            <th>Valor Registado</th>
+                                            <tr>
+                                                <th>Data</th>
+                                                <th>Hora</th>
+                                                <th>Valor Registado</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             <?php
