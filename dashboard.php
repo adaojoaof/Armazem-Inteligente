@@ -32,13 +32,13 @@
 	
    //array com as prateleiras no armazém -> prateleiras.txt
 	$prateleiras=file_get_contents("api/files/prateleiras.txt");
-   $prateleiras=explode("\n",$prateleiras);
-   foreach ($prateleiras as $key => $value) {
+	$prateleiras=explode("\n",$prateleiras); 
+	array_pop($prateleiras);
+	foreach ($prateleiras as $key => $value) {
        $prateleira=explode(":",$value);
        $newPrateleiras[$prateleira[0]]=$prateleira[1];
-   }
-   $prateleiras=$newPrateleiras;
-   array_pop($prateleiras);
+	}
+	$prateleiras=$newPrateleiras;
 ?>
 <?php include "header.php"; ?>
 
