@@ -9,7 +9,7 @@
 	
 	$username_2="João";
 	$password_2="1234";
-
+    
     if(isset($_POST['username']) && isset($_POST['password'])){
         if ($_POST['username'] == $username && $_POST['password']==$password) {
             echo "O username submetido foi:".$_POST['username']."<br>";
@@ -51,16 +51,16 @@
     <link rel="icon" type="image/png" href="assets/img/icon.png">
     <title>Login | Warehouse - IT technologies</title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/custom-login.css">
+    <link rel="stylesheet" href="assets/css/custom-login.css"> 
 </head>
 <body class="login-page">
     <div class="container-fluid">
         <div class="row h-100 align-items-center">
-            <div class="col-8 login-left-side p-0">
+            <div class="col-lg-8 col-sm-6 col-4 login-left-side p-0">
                 <div class="login-image">
                 </div>
             </div>
-            <div class="col-4 login-form h-100">
+            <div class="col-lg-4 col-sm-6 col-8 login-form h-100">
                 <form method="post" class="p-4 text-center">
                     <img class="mb-4 mx-auto" src="assets/img/logo-orange.png" alt="">
 

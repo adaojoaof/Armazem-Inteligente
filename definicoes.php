@@ -1,30 +1,31 @@
 <?php
-    $pageTitle="Definições";
-    $activePage="definicoes";
+$pageTitle = "Definições";
+$activePage = "definicoes";
 
-    //array com as prateleiras no armazém -> prateleiras.txt
-	$prateleiras=file_get_contents("api/files/prateleiras.txt");
-    $prateleiras=explode("\n",$prateleiras);
-	array_pop($prateleiras);
+//array com as prateleiras no armazém -> prateleiras.txt
+$prateleiras = file_get_contents("api/files/prateleiras.txt");
+$prateleiras = explode("\n", $prateleiras);
+array_pop($prateleiras);
+foreach ($prateleiras as $key => $value) {
+    $prateleira = explode(":", $value);
+    $newPrateleiras[$prateleira[0]] = $prateleira[1];
+}
+$prateleiras = $newPrateleiras;
+
+// var_dump($prateleiras);
+
+//Verificar submissão do formulário
+if (isset($_POST['save-settings']) && $_POST['save-settings'] == "Guardar") {
+    file_put_contents("api/files/prateleiras.txt", "");
+    //var_dump($_POST['prateleiras']);
+    $prateleiras = $_POST['prateleiras'];
     foreach ($prateleiras as $key => $value) {
-        $prateleira=explode(":",$value);
-        $newPrateleiras[$prateleira[0]]=$prateleira[1];
+        file_put_contents("api/files/prateleiras.txt", $key . ":" . $value . PHP_EOL, FILE_APPEND);
     }
-    $prateleiras=$newPrateleiras;
-   
-    // var_dump($prateleiras);
-
-    //Verificar submissão do formulário
-    if(isset($_POST['save-settings']) && $_POST['save-settings']=="Guardar"){
-        file_put_contents("api/files/prateleiras.txt", "");
-        //var_dump($_POST['prateleiras']);
-        $prateleiras=$_POST['prateleiras'];
-        foreach ($prateleiras as $key => $value) {
-            file_put_contents("api/files/prateleiras.txt", $key.":".$value.PHP_EOL, FILE_APPEND);
-        }
-        $successSubmit=true;
-    }
+    $successSubmit = true;
+}
 ?>
+
 <?php include "header.php"; ?>
 
 <div class="row">
@@ -32,11 +33,11 @@
         <div class="card-stats card">
             <form action="definicoes.php" method="post">
                 <div class="card-header">
-                    <h4 class="card-title">Definições das Pratelerias do Armazém</h4> 
+                    <h4 class="card-title">Definições das Pratelerias do Armazém</h4>
                     <p class="card-category">Associar os produtos às prateleiras existentes no armazém</p>
                 </div>
                 <div class="card-body">
-                    <?php if(isset($successSubmit) && $successSubmit==true){ ?>
+                    <?php if (isset($successSubmit) && $successSubmit == true) { ?>
                         <div class="alert alert-success">
                             <button type="button" aria-hidden="true" class="close" data-dismiss="alert">
                                 <i class="nc-icon nc-simple-remove"></i>
@@ -45,7 +46,7 @@
                                 <b> Dados submetidos com sucesso! - </b> Os dados foram guardados com sucesso</span>
                         </div>
                     <?php } ?>
-                    
+
                     <?php
                     foreach ($prateleiras as $key => $value) {
                     ?>

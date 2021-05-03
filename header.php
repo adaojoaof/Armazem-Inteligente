@@ -1,4 +1,7 @@
+<!-- Ficheiro que contem toda aestutura inicial das páginas da dashboard [evita-se a repetição constante de código] -->
+
 <?php
+    //validação da sessão iniciada
     session_start();
     if(!isset($_SESSION['username'])){
         header("location:login.php");
@@ -53,6 +56,12 @@
                             <p>Definições</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">
+                            <i class="nc-icon nc-button-power"></i>
+                            <p>Terminar Sessão</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -76,8 +85,7 @@
                         </ul>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link text-secondary" href="logout.php">Terminar Sessão
-                                </a>
+                                <h4 class="ml-4 mt-3">Olá, <?= $_SESSION['username'] ?>!</h4>
                             </li>
                         </ul>
                     </div>
