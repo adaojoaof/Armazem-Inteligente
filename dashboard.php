@@ -7,20 +7,14 @@ $sensores = file_get_contents("api/files/sensores.txt");
 $sensores = explode("\n", $sensores);
 
 
-$valor_temperatura = file_get_contents("api/files/armazem/temperatura/valor.txt");
-$hora_temperatura = file_get_contents("api/files/armazem/temperatura/hora.txt");
-$valor_humedad = file_get_contents("api/files/armazem/humidade/valor.txt");
-$hora_humedad = file_get_contents("api/files/armazem/humidade/hora.txt");
-$valor_luminosidade = file_get_contents("api/files/armazem/luminosidade/valor.txt");
-$hora_luminosidade = file_get_contents("api/files/armazem/luminosidade/hora.txt");
+$temperatura = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=temperatura"));
+$humidade = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=humidade"));
+$vento = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=detetor_vento"));
 
 
-$valor_porta_principal = file_get_contents("api/files/armazem/porta_principal/valor.txt");
-$hora_porta_principal = file_get_contents("api/files/armazem/porta_principal/hora.txt");
-$valor_porta_carga = file_get_contents("api/files/armazem/porta_carga/valor.txt");
-$hora_porta_carga = file_get_contents("api/files/armazem/porta_carga/hora.txt");
-$valor_porta_descarga = file_get_contents("api/files/armazem/porta_descargas/valor.txt");
-$hora_porta_descarga = file_get_contents("api/files/armazem/porta_descargas/hora.txt");
+$portao_principal = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=portao_principal"));
+$porta_descargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=porta_descargas"));
+$porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=porta_cargas"));
 $valor_camara = file_get_contents("api/files/armazem/camara/valor.txt");
 $hora_camara = file_get_contents("api/files/armazem/camara/hora.txt");
 $valor_sensores = sizeof($sensores);
@@ -52,10 +46,10 @@ $prateleiras = $newPrateleiras;
             <p class="card-category">Estado dos Portões</p>
          </div>
          <div class="card-body">
-            <div class="row">
+            <div class="row porta-icon" id="portao_principal" data-state="<?= $portao_principal->value?>">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning">
-                     <?php if ($valor_porta_principal == 1) { ?>
+                  <div class="icon-big text-center icon-warning pointer">
+                     <?php if ($portao_principal->value == 1) { ?>
                         <i class="text-success fas fa-lock-open"></i>
                      <?php } else { ?>
                         <i class="text-danger fas fa-lock"></i>
@@ -65,15 +59,15 @@ $prateleiras = $newPrateleiras;
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Portão Principal</p>
-                     <h4 class="card-title"> <?= $valor_porta_principal == 1 ? "Aberto" : "Fechado" ?> </h4>
-                     <p class="dashboard-cards-hora"><?= $hora_porta_principal ?></p>
+                     <h4 class="card-title"> <?= $portao_principal->value == 1 ? "Aberto" : "Fechado" ?> </h4>
+                     <p class="dashboard-cards-hora"><?= $portao_principal->datetime ?></p>
                   </div>
                </div>
             </div>
-            <div class="row">
+            <div class="row porta-icon" id="porta_cargas" data-state="<?= $porta_cargas->value?>">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning">
-                     <?php if ($valor_porta_carga == 1) { ?>
+                  <div class="icon-big text-center icon-warning pointer">
+                     <?php if ($porta_cargas->value == 1) { ?>
                         <i class="text-success fas fa-lock-open"></i>
                      <?php } else { ?>
                         <i class="text-danger fas fa-lock"></i>
@@ -83,15 +77,15 @@ $prateleiras = $newPrateleiras;
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Portão Cargas</p>
-                     <h4 class="card-title"> <?= $valor_porta_carga == 1 ? "Aberto" : "Fechado" ?> </h4>
-                     <p class="dashboard-cards-hora"><?= $hora_porta_carga ?></p>
+                     <h4 class="card-title"> <?= $porta_cargas->value == 1 ? "Aberto" : "Fechado" ?> </h4>
+                     <p class="dashboard-cards-hora"><?= $porta_cargas->datetime ?></p>
                   </div>
                </div>
             </div>
-            <div class="row">
+            <div class="row porta-icon" id="porta_descargas" data-state="<?= $porta_descargas->value?>">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning">
-                     <?php if ($valor_porta_descarga == 1) { ?>
+                  <div class="icon-big text-center icon-warning pointer">
+                     <?php if ($porta_descargas->value == 1) { ?>
                         <i class="text-success fas fa-lock-open"></i>
                      <?php } else { ?>
                         <i class="text-danger fas fa-lock"></i>
@@ -101,8 +95,8 @@ $prateleiras = $newPrateleiras;
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Portão Descargas</p>
-                     <h4 class="card-title"> <?= $valor_porta_descarga == 1 ? "Aberto" : "Fechado" ?> </h4>
-                     <p class="dashboard-cards-hora"><?= $hora_porta_descarga ?></p>
+                     <h4 class="card-title"> <?= $porta_descargas->value == 1 ? "Aberto" : "Fechado" ?> </h4>
+                     <p class="dashboard-cards-hora"><?= $porta_descargas->datetime ?></p>
                   </div>
                </div>
             </div>
@@ -116,39 +110,39 @@ $prateleiras = $newPrateleiras;
             <p class="card-category">Dados do Interior do Armazém</p>
          </div>
          <div class="card-body">
-            <div class="row">
+            <div class="row" id="temperatura" data-value="<?= $temperatura->value ?>">
                <div class="col-4">
                   <div class="icon-big text-center icon-warning"><i class="fas fa-thermometer-half text-primary"></i></div>
                </div>
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Temperatura</p>
-                     <h4 class="card-title"><?php echo $valor_temperatura ?>Cº</h4>
-                     <p class="dashboard-cards-hora"><?= $hora_temperatura ?></p>
+                     <h4 class="card-title"><span class="value-in"><?php echo $temperatura->value ?></span> Cº <span class="arrow-state"></span></h4>
+                     <p class="dashboard-cards-hora"><?= $temperatura->datetime ?></p>
                   </div>
                </div>
             </div>
-            <div class="row">
+            <div class="row" id="humidade"  data-value="<?= $humidade->value ?>">
                <div class="col-4">
                   <div class="icon-big text-center icon-warning"><i class="fas fa-tint text-primary"></i></div>
                </div>
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Humidade</p>
-                     <h4 class="card-title"><?php echo $valor_humedad ?>%</h4>
-                     <p class="dashboard-cards-hora"><?= $hora_humedad ?></p>
+                     <h4 class="card-title"><span class="value-in"><?php echo $humidade->value ?></span>% <span class="arrow-state"></span></h4>
+                     <p class="dashboard-cards-hora"><?= $humidade->datetime ?></p>
                   </div>
                </div>
             </div>
-            <div class="row">
+            <div class="row" id="detetor_vento">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning"><i class="fas fa-sun text-primary"></i></div>
+                  <div class="icon-big text-center icon-warning"><i class="fas fa-wind text-primary"></i></div>
                </div>
                <div class="col-8">
                   <div class="numbers">
-                     <p class="card-category">Luminosidade</p>
-                     <h4 class="card-title"><?php echo $valor_luminosidade ?></h4>
-                     <p class="dashboard-cards-hora"><?= $hora_luminosidade ?></p>
+                     <p class="card-category">Vento</p>
+                     <h4 class="card-title"><?php echo $vento->value == 1 ? "Detetado" : "Não detetado" ?></h4>
+                     <p class="dashboard-cards-hora"><?= $vento->datetime ?></p>
                   </div>
                </div>
             </div>

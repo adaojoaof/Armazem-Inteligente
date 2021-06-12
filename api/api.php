@@ -22,19 +22,46 @@
 	//echo $_SERVER['REQUEST_METHOD'];
 	
 	
+
+	function connectDatabse(){
+		include("../database-config.php");
+		$conn = new mysqli($servername, $username, $password, $dbname);
+		if ($conn->connect_error) {
+			die("Connection failed: " . $conn->connect_error);
+		}
+		return $conn;
+	}
+
+	function verifyIfSensorExists($nome){
+		$conn=connectDatabse();
+		$nome = mysqli_real_escape_string($conn,$nome);
+		$sql = "SELECT id FROM sensores WHERE id = '$nome'";
+		$resultCheckSensor = $conn->query($sql);
+		$conn->close();
+		if($resultCheckSensor->num_rows == 1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		
 		if(isset($_POST["nome"]) && isset($_POST["valor"]) && isset($_POST["hora"])){
 			if($_POST["nome"]!="" && $_POST["valor"]!="" && $_POST["hora"]!="" && is_numeric($_POST["valor"])){
-				if(isset($sensores[$_POST["nome"]])){
-					file_put_contents("files/armazem/". $_POST["nome"] ."/valor.txt", $_POST["valor"]);
-					file_put_contents("files/armazem/". $_POST["nome"] ."/hora.txt", $_POST["hora"]);
-					file_put_contents("files/armazem/". $_POST["nome"] ."/log.txt", $_POST["hora"]."-".$_POST["valor"].PHP_EOL, FILE_APPEND);
-				}else if(isset($prateleiras[$_POST["nome"]])){
-					file_put_contents("files/prateleiras/". $_POST["nome"] ."/valor.txt", $_POST["valor"]);
-					file_put_contents("files/prateleiras/". $_POST["nome"] ."/hora.txt", $_POST["hora"]);
-					file_put_contents("files/prateleiras/". $_POST["nome"] ."/log.txt", $_POST["hora"]."-".$_POST["valor"].PHP_EOL, FILE_APPEND);
-				}else{
+				if(verifyIfSensorExists($_POST["nome"])){
+					$conn=connectDatabse();
+					$nome = mysqli_real_escape_string($conn,$_POST["nome"]);
+					$valor = mysqli_real_escape_string($conn,$_POST["valor"]);
+					$hora = mysqli_real_escape_string($conn,$_POST["hora"]);
+					$sql = "INSERT INTO historico_sensores VALUES (NULL, '$nome', $valor, '$hora');";
+					if($conn->query($sql) == true){
+						echo "SUCCESS";
+					}else{
+						echo "ERROR DB - ".$conn->error;
+					}
+					$conn->close();
+				} else {
 					echo "ERROR: Sensor não encontrado";
 					http_response_code(404);
 				}
@@ -48,19 +75,70 @@
 		}
 		exit();
 		
-	}elseif($_SERVER["REQUEST_METHOD"] == "GET"){
+	}else if($_SERVER["REQUEST_METHOD"] == "GET"){
 		if(isset($_GET['sensor'])){
-			if(isset($sensores[$_GET['sensor']])){
-				echo file_get_contents("files/armazem/".$_GET["sensor"]."/valor.txt");
+			if(verifyIfSensorExists($_GET["sensor"])){
+				$conn=connectDatabse();
+				$sensor = mysqli_real_escape_string($conn,$_GET['sensor']);
+				$sql = "SELECT * FROM historico_sensores WHERE sensor_id = '$sensor' ORDER BY datetime desc LIMIT 1";
+				$result = $conn->query($sql);
+				$conn->close();
+				$data=$result->fetch_assoc();
+				echo json_encode($data);
 			}else{
 				echo "ERROR: Sensor não encontrado";
 				http_response_code(404);
 			}
-		} else if(isset($_GET['prateleira'])){
-			if(isset($prateleiras[$_GET['prateleira']])){
-				echo file_get_contents("files/prateleiras/".$_GET["prateleira"]."/valor.txt");
+		}else if(isset($_GET['card_id_portaoPrincipal'])){
+			$conn=connectDatabse();
+			$card = mysqli_real_escape_string($conn,$_GET['card_id_portaoPrincipal']);
+			$sql = "SELECT username, rule FROM users WHERE rfid_card_id = '$card'";
+			$resultCardVerify = $conn->query($sql);
+			$conn->close();
+			if($resultCardVerify->num_rows == 1){
+				$data=$resultCardVerify->fetch_assoc();
+				if($data['rule']=="admin"||$data['rule']=="driver"){
+					$authorized="authorized";
+				}else{
+					$authorized="unauthorized";
+				}
+				$conn=connectDatabse();
+				$sql = "INSERT INTO log_acessos_armazem VALUES (NULL, '".$data['username']."', '$authorized', NOW());";
+				if($conn->query($sql) == true){
+					echo $authorized;
+				}else{
+					echo "ERROR DB - ".$conn->error;
+				}
+				$conn->close();
 			}else{
-				echo "ERROR: Prateleiras não encontrada";
+				echo "ERROR: CardId não encontrado";
+				http_response_code(404);
+			}
+		}else if(isset($_GET['currentAuthCardUser'])){
+			$conn=connectDatabse();
+			$sql = "SELECT users.name FROM log_acessos_armazem INNER JOIN users on log_acessos_armazem.username=users.username ORDER by datetime desc limit 1";
+			$resultCurrentCardUsername = $conn->query($sql);
+			$conn->close();
+			if($resultCurrentCardUsername->num_rows == 1){
+				$data=$resultCurrentCardUsername->fetch_assoc();
+				echo $data['name'];
+			}else{
+				echo "ERROR: Sem dados!";
+				http_response_code(404);
+			}
+		}else if(isset($_GET['allSensors'])){
+			$conn=connectDatabse();
+			$sql = "SELECT historico_sensores.sensor_id as sensor_id, value, historico_sensores.datetime as datetime from historico_sensores, ( select sensor_id, max(datetime) as datetime from historico_sensores group by sensor_id ) most_recent where most_recent.sensor_id=historico_sensores.sensor_id and most_recent.datetime=historico_sensores.datetime ORDER BY historico_sensores.id DESC";
+			$resultAllSensors = $conn->query($sql);
+			$conn->close();
+			if($resultAllSensors->num_rows > 0){
+				$data=[];
+				while($row=$resultAllSensors->fetch_assoc()){
+					$data[$row['sensor_id']]=$row;
+				}
+				print json_encode($data);
+			}else{
+				echo "ERROR: Sem dados!";
 				http_response_code(404);
 			}
 		}else{
@@ -73,7 +151,4 @@
 		http_response_code(403);
 		exit();
 	}
-	
-	
-	
 ?>

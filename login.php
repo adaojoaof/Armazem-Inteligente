@@ -1,42 +1,31 @@
 <?php
 
-    session_start();
-    $username="persona";
-    $password="1234";
+session_start();
+include("database-config.php");
 
-    $username_1="jhelan";
-    $password_1="1234";
-	
-	$username_2="João";
-	$password_2="1234";
-    
+if($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['username']) && isset($_POST['password'])){
-        if ($_POST['username'] == $username && $_POST['password']==$password) {
-            echo "O username submetido foi:".$_POST['username']."<br>";
-            echo "A password submetida foi:".$_POST['password']."<br>";
-
-            $_SESSION["username"]=$_POST['username'];
-            //header("refresh:0;url=dashboard.php"
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+        $loginUsername = mysqli_real_escape_string($conn,$_POST['username']);
+        $loginPassword = mysqli_real_escape_string($conn,$_POST['password']); 
+        
+        $sql = "SELECT name FROM users WHERE username = '$loginUsername' and password = '".md5($loginPassword)."'";
+        $resultLogin = $conn->query($sql);
+        $conn->close();
+        
+        if($resultLogin->num_rows == 1) {
+            $data=$resultLogin->fetch_assoc();
+            $_SESSION["username"]=$data['name'];
             header('Location:dashboard.php');
-
-        } elseif ($_POST['username'] == $username_1 && $_POST['password']==$password_1) {
-            echo "O username submetido foi:".$_POST['username']."<br>";
-            echo "A password submetida foi:".$_POST['password']."<br>";
-
-            $_SESSION["username"]=$_POST['username'];
-            //header("refresh:0;url=dashboard.php"
-            header('Location:dashboard.php');
-		    } elseif ($_POST['username'] == $username_2 && $_POST['password']==$password_2) {
-            echo "O username submetido foi:".$_POST['username']."<br>";
-            echo "A password submetida foi:".$_POST['password']."<br>";
-
-            $_SESSION["username"]=$_POST['username'];
-            //header("refresh:0;url=dashboard.php"
-            header('Location:dashboard.php');
-        } else {
-            //echo "Credenciais erradas!!!" . "<br>";
+        }else {
+            $error = "Login inválido!";
         }
     }
+ }
 
 ?>
 
@@ -65,12 +54,13 @@
                     <img class="mb-4 mx-auto" src="assets/img/logo-orange.png" alt="">
 
                     <div class="form-floating">
-                        <input type="text" class="form-control mb-3" name="username" placeholder="Username">
+                        <input type="text" class="form-control mb-3" value="<?= isset($_POST['username'])?$_POST['username']:""?>" name="username" placeholder="Username">
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control mb-3" name="password" placeholder="Password">
                     </div>
                     <input class="w-100 btn btn-lg btn-light btn-submit" type="submit" value="Entrar"></input>
+                    <p style="text-align: left; margin-top:15px; color:red;"><?= $error; ?></p>
                 </form>
             </div>
         </div>

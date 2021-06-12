@@ -1,4 +1,4 @@
-prt1:Papel
+prt1:Pratos
 prt2:Atum
 prt3:Salsicha
 prt4:Bolachas

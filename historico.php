@@ -2,14 +2,25 @@
 $pageTitle = "Histórico";
 $activePage = "historico";
 
-//array com os sensores no armazém -> sensores.txt
-$sensores = file_get_contents("api/files/sensores.txt");
-$sensores = explode("\n", $sensores);
-foreach ($sensores as $key => $value) {
-    $sensor = explode(":", $value);
-    $newSensores[$sensor[0]] = $sensor[1];
+function connectDatabse(){
+    include("database-config.php");
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    return $conn;
 }
-$sensores = $newSensores;
+
+$conn=connectDatabse();
+$sql = "SELECT * FROM sensores order by id";
+$resultSensores = $conn->query($sql);
+$conn->close();
+
+//array com os sensores no armazém -> sensores.txt
+$sensores=[];
+while($row=$resultSensores->fetch_assoc()){
+    $sensores[$row['id']]=$row;
+}
 ?>
 
 <?php include "header.php"; ?>
@@ -19,7 +30,7 @@ $sensores = $newSensores;
         <h5>Selecione o Sensor:</h5>
         <div class="list-group">
             <?php foreach ($sensores as $key => $value) { ?>
-                <a href="historico.php?sensor=<?= $key ?>" class="<?= isset($_GET['sensor'])&&$_GET['sensor']==$key?"active":"" ?> list-group-item list-group-item-action"><?= $value ?></a>
+                <a href="historico.php?sensor=<?= $key ?>" class="<?= isset($_GET['sensor'])&&$_GET['sensor']==$key?"active":"" ?> list-group-item list-group-item-action"><?= $value['name'] ?></a>
             <?php } ?>
         </div>
     </div>
@@ -29,14 +40,20 @@ $sensores = $newSensores;
             if (isset($sensores[$_GET['sensor']])) { ?>
                 <div class="card-stats card">
                     <div class="card-header">
-                        <h4 class="card-title"><?= $sensores[$_GET['sensor']] ?></h4>
+                        <h4 class="card-title"><?= $sensores[$_GET['sensor']]['name'] ?></h4>
                         <p class="card-category">Histórico do Sensor</p>
                     </div>
                     <div class="card-body">
                         <?php
-                        $historico = file_get_contents("api/files/armazem/" . $_GET['sensor'] . "/log.txt");
-                        $historico = explode("\n", $historico);
-                        array_pop($historico); //remove o 'enter' no array
+                        $conn=connectDatabse();
+                        $sensor = mysqli_real_escape_string($conn,$_GET['sensor']);
+                        $sql = "SELECT * FROM historico_sensores where sensor_id='$sensor' order by datetime desc limit 100";
+                        $resultHistorico = $conn->query($sql);
+                        $conn->close();
+                        $historico=[];
+                        while($row=$resultHistorico->fetch_assoc()){
+                            $historico[$row['id']]=$row;
+                        }
                         if (count($historico) > 0) {
                         ?>
                             <div class="table-responsive">
@@ -51,14 +68,33 @@ $sensores = $newSensores;
                                     <tbody>
                                         <?php
                                         foreach ($historico as $key => $value) {
-                                            $log = explode("-", $value);
-                                            $data = $log[0];
-                                            $valor = $log[1];
                                         ?>
                                             <tr>
-                                                <td><?= explode(" ", $data)[0] ?></td>
-                                                <td><?= explode(" ", $data)[1] ?></td>
-                                                <td><?= $valor ?></td>
+                                                <td><?= explode(" ",$value['datetime'])[0] ?></td>
+                                                <td><?= explode(" ",$value['datetime'])[1] ?></td>
+                                                <td>
+                                                    <?php
+                                                        if($value['sensor_id']=="portao_principal"||$value['sensor_id']=="porta_cargas"||$value['sensor_id']=="porta_descargas"){
+                                                            if($value['value']==1){?>
+                                                                <i class="text-success fas fa-lock-open"></i>
+                                                            <?php }else{ ?>
+                                                                <i class="text-danger fas fa-lock"></i>
+                                                            <?php }
+                                                        }else if($value['sensor_id']=="humidade"){
+                                                            echo $value['value']."%";
+                                                        }else if($value['sensor_id']=="temperatura"){
+                                                            echo $value['value']." Cº";
+                                                        }
+                                                        else if($value['sensor_id']=="detetor_vento"){
+                                                            if($value['value']==1){
+                                                                echo "Detetado";
+                                                            }else{
+                                                                echo "Não detetado";
+                                                            }
+                                                        }
+                                                    ?>
+                                                
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -67,15 +103,6 @@ $sensores = $newSensores;
                         <?php } else { ?>
                             <p class="text-center mt-4 mb-4">Sem dados para apresentar!</p>
                         <?php } ?>
-                    </div>
-                    <div class="card-footer">
-                        <hr>
-                        <div class="stats"><i class="fas fa-redo mr-1"></i>
-                            <?php
-                            $date = file_get_contents("api/files/armazem/" . $_GET['sensor'] . "/hora.txt");
-                            echo $date;
-                            ?>
-                        </div>
                     </div>
                 </div>
         <?php

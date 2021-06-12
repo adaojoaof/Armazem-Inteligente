@@ -50,6 +50,18 @@
                             <p>Histórico</p>
                         </a>
                     </li>
+                    <li class="nav-item <?= $activePage=="historico-acessos"?"active":""?>">
+                        <a class="nav-link" href="historico-acessos.php">
+                            <i class="nc-icon nc-align-left-2"></i>
+                            <p>Histórico de Acessos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item <?= $activePage=="utilizadores"?"active":""?>">
+                        <a class="nav-link" href="utilizadores.php">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Utilizadores</p>
+                        </a>
+                    </li>
                     <li class="nav-item <?= $activePage=="definicoes"?"active":""?>">
                         <a class="nav-link" href="definicoes.php">
                             <i class="nc-icon nc-settings-gear-64"></i>
