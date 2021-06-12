@@ -21,7 +21,7 @@
     <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
     <script src="assets/js/plugins/bootstrap-switch.js"></script>
     <!--  Chartist Plugin  -->
-    <!-- <script src="assets/js/plugins/chartist.min.js"></script> -->
+    <script src="assets/js/plugins/chartist.min.js"></script>
     <!--  Notifications Plugin    -->
     <!-- <script src="assets/js/plugins/bootstrap-notify.js"></script> -->
     <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
@@ -64,18 +64,24 @@
                         }
                         else if(sensor.sensor_id=="humidade"||sensor.sensor_id=="temperatura"){
                             $("#"+sensor.sensor_id).find(".card-title .value-in").html(sensor.value);
-                            oldValue=$("#"+sensor.sensor_id).attr("data-value");
+                            oldValue=$("#"+sensor.sensor_id).data("value");
                             if(oldValue>sensor.value){
                                 $("#"+sensor.sensor_id).find(".arrow-state").html('<i class="fas fa-arrow-down"></i>');
                             }else if(oldValue<sensor.value){
                                 $("#"+sensor.sensor_id).find(".arrow-state").html('<i class="fas fa-arrow-up"></i>');
                             }
-                            $("#"+sensor.sensor_id).attr("data-value", sensor.value);
+                            $("#"+sensor.sensor_id).data("value", sensor.value);
                         }else if(sensor.sensor_id=="detetor_vento"){
                             if(sensor.value==1){
                                 $("#"+sensor.sensor_id).find(".card-title").html("Detetado");
                             }else{
                                 $("#"+sensor.sensor_id).find(".card-title").html('Não detetado');
+                            }
+                        }else if(sensor.sensor_id=="janela_sul"||sensor.sensor_id=="janela_norte"){
+                            if(sensor.value==1){
+                                $("#"+sensor.sensor_id).find(".card-title").html("Aberta");
+                            }else{
+                                $("#"+sensor.sensor_id).find(".card-title").html('Fechada');
                             }
                         }
                         console.log("#"+sensor.sensor_id);
@@ -83,6 +89,42 @@
                     });
                 });
             }, 3000);
+            // Our labels and three data series
+var data = {
+  labels: ['Week1', 'Week2', 'Week3', 'Week4', 'Week5', 'Week6'],
+  series: [
+    [5, 4, 3, 7, 5, 10] 
+  ]
+};
+
+// We are setting a few options for our chart and override the defaults
+var options = {
+  // Don't draw the line chart points
+  showPoint: false,
+  // Disable line smoothing
+  lineSmooth: false,
+  // X-Axis specific configuration
+  axisX: {
+    // We can disable the grid for this axis
+    showGrid: false,
+    // and also don't show the label
+    showLabel: false
+  },
+  // Y-Axis specific configuration
+  axisY: {  
+    // Lets offset the chart a bit from the labels
+    offset: 60,
+    // The label interpolation function enables you to modify the values
+    // used for the labels on each axis. Here we are converting the
+    // values into million pound.
+    labelInterpolationFnc: function(value) {
+      return value + ' Cº';
+    }
+  }
+};
+
+// All you need to do is pass your configuration as third parameter to the chart function
+new Chartist.Line('.ct-chart', data, options);
         });
 
         function dataHora(){

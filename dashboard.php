@@ -10,6 +10,8 @@ $sensores = explode("\n", $sensores);
 $temperatura = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=temperatura"));
 $humidade = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=humidade"));
 $vento = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=detetor_vento"));
+$janelaNorte = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=janela_sul"));
+$janelaSul = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=janela_sul"));
 
 
 $portao_principal = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=portao_principal"));
@@ -185,42 +187,31 @@ $prateleiras = $newPrateleiras;
    <div class="col-xl-3 col-sm-6">
       <div class="card-stats card">
          <div class="card-header">
-            <h4 class="card-title">Estado</h4>
-            <p class="card-category">Dispositivos instalados</p>
+            <h4 class="card-title">Janelas</h4>
+            <p class="card-category">Janelas do Armazém</p>
          </div>
          <div class="card-body">
-            <div class="row">
+         <div class="row" id="janela_sul">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning">
-                     <?php if ($valor_internet == 1) { ?>
-                        <i class="fas fa-check-circle text-success"></i>
-                     <?php } else { ?>
-                        <i class="fas fa-exclamation-triangle text-danger"></i>
-                     <?php } ?>
-                  </div>
+                  <div class="icon-big text-center icon-warning"><i class="far fa-window-maximize"></i></div>
                </div>
                <div class="col-8">
                   <div class="numbers">
-                     <p class="card-category">Internet</p>
-                     <h4 class="card-title"> <?= $valor_internet == 1 ? "ON" : "OFF" ?> </h4>
-                     <p class="dashboard-cards-hora"><?= $hora_internet ?></p>
+                     <p class="card-category">Janela Norte</p>
+                     <h4 class="card-title"><?php echo $janelaNorte->value == 1 ? "Aberta" : "Fechada" ?></h4>
+                     <p class="dashboard-cards-hora"><?= $janelaNorte->datetime ?></p>
                   </div>
                </div>
             </div>
-            <div class="row">
+            <div class="row" id="janela_norte">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning">
-                     <?php if ($valor_error == 0) { ?>
-                        <i class="fas fa-check-circle text-success"></i>
-                     <?php } else { ?>
-                        <i class="fas fa-exclamation-triangle text-danger"></i>
-                     <?php } ?>
-                  </div>
+                  <div class="icon-big text-center icon-warning"><i class="far fa-window-maximize"></i></div>
                </div>
                <div class="col-8">
                   <div class="numbers">
-                     <p class="card-category">Erros</p>
-                     <h4 class="card-title"><?php echo $valor_error ?></h4>
+                     <p class="card-category">Janela Sul</p>
+                     <h4 class="card-title"><?php echo $janelaSul->value == 1 ? "Aberta" : "Fechada" ?></h4>
+                     <p class="dashboard-cards-hora"><?= $janelaSul->datetime ?></p>
                   </div>
                </div>
             </div>
@@ -230,38 +221,12 @@ $prateleiras = $newPrateleiras;
    <div class="col-12">
       <div class="card-stats card">
          <div class="card-header">
-            <h4 class="card-title">Prateleiras</h4>
-            <p class="card-category">Estado de Cada Prateleira do Armazém</p>
+            <h4 class="card-title">Histórico das Temperaturas</h4>
+            <p class="card-category"></p>
          </div>
          <div class="card-body">
-            <div class="table-responsive">
-               <table class="table table-hover table-striped">
-                  <thead>
-                     <tr>
-                        <th>Código Prateleira</th>
-                        <th>Localização</th>
-                        <th>Produto</th>
-                        <th>Stock</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <?php foreach ($prateleiras as $key => $value) { ?>
-                        <tr>
-                           <td><?= $key ?></td>
-                           <td><?= file_get_contents("api/files/prateleiras/$key/localizacao.txt") ?></td>
-                           <td><?= $value ?></td>
-                           <td>
-                              <?php if (file_get_contents("api/files/prateleiras/$key/valor.txt") == 1) { ?>
-                                 <span class="badge badge-pill badge-success">OK</span>
-                              <?php } else { ?>
-                                 <span class="badge badge-pill badge-danger">Sem stock</span>
-                              <?php } ?>
-                              <span class="pratelerias-hora">[<?= file_get_contents("api/files/prateleiras/$key/hora.txt") ?>]</span>
-                           </td>
-                        </tr>
-                     <?php } ?>
-                  </tbody>
-               </table>
+            <div class="ct-chart ct-perfect-fourth">
+               
             </div>
          </div>
       </div>

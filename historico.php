@@ -84,12 +84,17 @@ while($row=$resultSensores->fetch_assoc()){
                                                             echo $value['value']."%";
                                                         }else if($value['sensor_id']=="temperatura"){
                                                             echo $value['value']." Cº";
-                                                        }
-                                                        else if($value['sensor_id']=="detetor_vento"){
+                                                        }else if($value['sensor_id']=="detetor_vento"){
                                                             if($value['value']==1){
                                                                 echo "Detetado";
                                                             }else{
                                                                 echo "Não detetado";
+                                                            }
+                                                        }else if($value['sensor_id']=="janela_sul"||$value['sensor_id']=="janela_norte"){
+                                                            if($value['value']==1){
+                                                                echo "Aberto";
+                                                            }else{
+                                                                echo "Fechado";
                                                             }
                                                         }
                                                     ?>
