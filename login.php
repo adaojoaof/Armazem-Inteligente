@@ -13,13 +13,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $loginUsername = mysqli_real_escape_string($conn,$_POST['username']);
         $loginPassword = mysqli_real_escape_string($conn,$_POST['password']); 
         
-        $sql = "SELECT name FROM users WHERE username = '$loginUsername' and password = '".md5($loginPassword)."'";
+        $sql = "SELECT name, rule FROM users WHERE username = '$loginUsername' and password = '".md5($loginPassword)."'";
         $resultLogin = $conn->query($sql);
         $conn->close();
         
         if($resultLogin->num_rows == 1) {
             $data=$resultLogin->fetch_assoc();
             $_SESSION["username"]=$data['name'];
+            $_SESSION["rules"]=$data['rule'];
             header('Location:dashboard.php');
         }else {
             $error = "Login inválido!";

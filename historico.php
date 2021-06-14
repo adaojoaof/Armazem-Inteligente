@@ -90,11 +90,17 @@ while($row=$resultSensores->fetch_assoc()){
                                                             }else{
                                                                 echo "Não detetado";
                                                             }
-                                                        }else if($value['sensor_id']=="janela_sul"||$value['sensor_id']=="janela_norte"){
+                                                        }else if($value['sensor_id']=="janela_sul"||$value['sensor_id']=="janela_norte"||$value['sensor_id']=="porta_rececao"){
                                                             if($value['value']==1){
-                                                                echo "Aberto";
+                                                                echo "Aberta";
                                                             }else{
-                                                                echo "Fechado";
+                                                                echo "Fechada";
+                                                            }
+                                                        }else if($value['sensor_id']=="movimento_rececao"){
+                                                            if($value['value']==1){
+                                                                echo "Detetado";
+                                                            }else{
+                                                                echo "Não detetado";
                                                             }
                                                         }
                                                     ?>

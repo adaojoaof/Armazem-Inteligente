@@ -1,6 +1,8 @@
 <?php
+
 $pageTitle = "Utilizadores";
 $activePage = "utilizadores";
+$rules=['admin'];
 
 include("database-config.php");
 
@@ -36,7 +38,6 @@ $conn->close();
                                     <th>Password</th>
                                     <th>Privilégio</th>
                                     <th>Card ID</th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,7 +51,6 @@ $conn->close();
                                                 <td>**********</td>
                                                 <td><?= $row["rule"]; ?></td>
                                                 <td><?= $row["rfid_card_id"]!=''?$row["rfid_card_id"]:"-"; ?></td>
-                                                <td><button type="button" class="btn btn-primary">Editar</button></td>
                                             </tr>
                                         <?php
                                         }

@@ -1,7 +1,7 @@
 <?php
-$pageTitle = "Histórico de Acessos ao Armazém";
-$activePage = "historico-acessos";
-$rules=['admin', 'driver'];
+$pageTitle = "Histórico de Imagens capturadas na Receção";
+$activePage = "historico-imagens";
+$rules=['admin'];
 
 function connectDatabse(){
     include("database-config.php");
@@ -13,14 +13,14 @@ function connectDatabse(){
 }
 
 $conn=connectDatabse();
-$sql = "SELECT datetime, name, result FROM log_acessos_armazem inner join users on users.username=log_acessos_armazem.username order by datetime desc limit 50";
-$resultHistorico = $conn->query($sql);
+$sql = "SELECT * FROM `images` order by datetime desc limit 10";
+$resultImages = $conn->query($sql);
 $conn->close();
 
 //array com os sensores no armazém -> sensores.txt
-$logs=[];
-while($row=$resultHistorico->fetch_assoc()){
-    $logs[]=$row;
+$images=[];
+while($row=$resultImages->fetch_assoc()){
+    $images[]=$row;
 }
 ?>
 
@@ -31,27 +31,23 @@ while($row=$resultHistorico->fetch_assoc()){
         <div class="card-stats card">
             <div class="card-body">
                 <?php
-                if (count($logs) > 0) {
+                if (count($images) > 0) {
                 ?>
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th>Data</th>
-                                    <th>Hora</th>
-                                    <th>Utilizador</th>
-                                    <th>Autorização</th>
+                                    <th>Imagem</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                foreach ($logs as $key => $value) {
+                                foreach ($images as $key => $value) {
                                 ?>
                                     <tr>
-                                        <td><?= explode(" ",$value['datetime'])[0] ?></td>
-                                        <td><?= explode(" ",$value['datetime'])[1] ?></td>
-                                        <td><?= $value['name'] ?></td>
-                                        <td><?= $value['result'] ?></td>
+                                        <td><?= $value['datetime'] ?></td>
+                                        <td><img class="img-fluid" style="height: 100px;" src="images/<?= $value['name'] ?>" alt=""></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

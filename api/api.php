@@ -141,6 +141,38 @@
 				echo "ERROR: Sem dados!";
 				http_response_code(404);
 			}
+
+			
+		}else if(isset($_GET['historicoTemperatura'])){
+			$conn=connectDatabse();
+			$sql = "SELECT value FROM `historico_sensores` WHERE sensor_id='temperatura' order by datetime desc LIMIT 50";
+			$resulthistory = $conn->query($sql);
+			$conn->close();
+			if($resulthistory->num_rows > 0){
+				$data=[];
+				while($row=$resulthistory->fetch_assoc()){
+					$data[]=intval($row['value']);
+				}
+				print json_encode($data);
+			}else{
+				echo "ERROR: Sem dados!";
+				http_response_code(404);
+			}
+
+			
+		}else if(isset($_GET['imagemRececao'])){
+			$conn=connectDatabse();
+			$sql = "SELECT * FROM `images` order by datetime desc LIMIT 1";
+			$resultImg = $conn->query($sql);
+			$conn->close();
+			if($resultImg->num_rows == 1){
+				print json_encode($resultImg->fetch_assoc());
+			}else{
+				echo "ERROR: Sem dados!";
+				http_response_code(404);
+			}
+
+			
 		}else{
 			echo "ERROR: Parâmetros invalidos";
 			http_response_code(400);

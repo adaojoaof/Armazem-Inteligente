@@ -6,6 +6,11 @@
     if(!isset($_SESSION['username'])){
         header("location:login.php");
     }
+    if(isset($rules)){
+        if(!in_array($_SESSION['rules'], $rules)){
+            header("location:dashboard.php");
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -50,24 +55,35 @@
                             <p>Histórico</p>
                         </a>
                     </li>
-                    <li class="nav-item <?= $activePage=="historico-acessos"?"active":""?>">
-                        <a class="nav-link" href="historico-acessos.php">
-                            <i class="nc-icon nc-align-left-2"></i>
-                            <p>Histórico de Acessos</p>
-                        </a>
-                    </li>
-                    <li class="nav-item <?= $activePage=="utilizadores"?"active":""?>">
-                        <a class="nav-link" href="utilizadores.php">
-                            <i class="nc-icon nc-circle-09"></i>
-                            <p>Utilizadores</p>
-                        </a>
-                    </li>
-                    <li class="nav-item <?= $activePage=="definicoes"?"active":""?>">
+                    <!-- As Páginass de histórico dos acessos/imagens só podem ser visualizadas pelos admin, bem como os utilizadores -->
+                    <?php if($_SESSION["rules"]=="admin"||$_SESSION["rules"]=="driver"){?>
+                        <li class="nav-item <?= $activePage=="historico-acessos"?"active":""?>">
+                            <a class="nav-link" href="historico-acessos.php">
+                                <i class="nc-icon nc-align-left-2"></i>
+                                <p>Histórico de Acessos</p>
+                            </a>
+                        </li>
+                    <?php } ?>
+                    <?php if($_SESSION["rules"]=="admin"){?>
+                        <li class="nav-item <?= $activePage=="historico-imagens"?"active":""?>">
+                            <a class="nav-link" href="historico-imagens.php">
+                                <i class="nc-icon nc-camera-20"></i>
+                                <p>Histórico de Imagens</p>
+                            </a>
+                        </li>
+                        <li class="nav-item <?= $activePage=="utilizadores"?"active":""?>">
+                            <a class="nav-link" href="utilizadores.php">
+                                <i class="nc-icon nc-circle-09"></i>
+                                <p>Utilizadores</p>
+                            </a>
+                        </li>
+                    <?php }?>
+                    <!-- <li class="nav-item <?= $activePage=="definicoes"?"active":""?>">
                         <a class="nav-link" href="definicoes.php">
                             <i class="nc-icon nc-settings-gear-64"></i>
                             <p>Definições</p>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">
                             <i class="nc-icon nc-button-power"></i>
