@@ -4,6 +4,7 @@ import json
 import datetime
 
 def send_file():    
+    #função para enviar a imagem do python para o servidor
     now = datetime.datetime.now()
     r=requests.post('http://localhost:8888/projetoTI/upload-file.php', files={'imagem':(now.strftime("%Y%m%d_%H%M%S")+".jpg",open('webcam.jpg', 'rb'))})
     if r.status_code == 200 :
@@ -13,6 +14,7 @@ def send_file():
         print("ERRO: Não foi possível realizar o pedido")
         print(r.status_code)
     print(r.text)
+#a variavel lastread serve para impedir que esteja sempre a tirar fotos sempre que está a 1
 lastRead=0
 try:
     try :
@@ -20,6 +22,7 @@ try:
         while True: # ciclo para o programa executar sem parar…
             r=requests.get('http://localhost:8888/projetoTI/api/api.php?sensor=movimento_rececao')
             data=json.loads(r.text)
+            # Tira a foto se houver movimento (value=1)
             if int(data['value'])==1 and lastRead!=1:
                 camera = cv.VideoCapture(1)
                 time.sleep(1)
@@ -30,7 +33,7 @@ try:
                 cv.destroyAllWindows()
                 send_file()
                 lastRead=1
-            else:
+            elif int(data['value'])==0:
                 lastRead=0
             time.sleep(3)
     except KeyboardInterrupt: # caso haja interrupção de teclado CTRL+C

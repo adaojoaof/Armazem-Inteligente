@@ -6,7 +6,9 @@
     if(!isset($_SESSION['username'])){
         header("location:login.php");
     }
+    //verifica se existem rules para a página onde este ficheiro está a ser chamado
     if(isset($rules)){
+        //se existir, verifica se a rule do user atual é válida para a página, se não, é redirecionado para a dashboard
         if(!in_array($_SESSION['rules'], $rules)){
             header("location:dashboard.php");
         }
@@ -55,7 +57,7 @@
                             <p>Histórico</p>
                         </a>
                     </li>
-                    <!-- As Páginass de histórico dos acessos/imagens só podem ser visualizadas pelos admin, bem como os utilizadores -->
+                    <!-- As Páginas de histórico dos acessos só pode ser visualizadas pelos admins e drivers -->
                     <?php if($_SESSION["rules"]=="admin"||$_SESSION["rules"]=="driver"){?>
                         <li class="nav-item <?= $activePage=="historico-acessos"?"active":""?>">
                             <a class="nav-link" href="historico-acessos.php">
@@ -64,6 +66,7 @@
                             </a>
                         </li>
                     <?php } ?>
+                    <!-- As Páginas de imagens e utilizadores só podem ser visualizadas pelos admin -->
                     <?php if($_SESSION["rules"]=="admin"){?>
                         <li class="nav-item <?= $activePage=="historico-imagens"?"active":""?>">
                             <a class="nav-link" href="historico-imagens.php">
@@ -78,6 +81,7 @@
                             </a>
                         </li>
                     <?php }?>
+                    <!-- antiga página de definições que agora, na entrega 2, deixou de ser usada -->
                     <!-- <li class="nav-item <?= $activePage=="definicoes"?"active":""?>">
                         <a class="nav-link" href="definicoes.php">
                             <i class="nc-icon nc-settings-gear-64"></i>
@@ -113,6 +117,7 @@
                         </ul>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
+                                <!-- Mostra o nome do utilizador atual -->
                                 <h4 class="ml-4 mt-3">Olá, <?= $_SESSION['username'] ?>!</h4>
                             </li>
                         </ul>

@@ -29,16 +29,24 @@
 
     <script>
         var chartTemperatura;
+        //Utilização do jquery
         $( document ).ready(function() {
-            <?php if($_SESSION['rules']=="admin"){ ?>
+            //se tiver permissões, é escrito o código para o click da abertura/fecho dos portões
+            <?php if($_SESSION['rules']=="admin"||$_SESSION['rules']=="driver"){ ?>
+                //definição do evento onClick
                 $(".porta-icon .pointer").on("click", function(){
+                    //vai buscar o elemnto HTML para a DOM
                     card=$(this).parent().parent();
+                    //pega no valor antigo e coloca o "oposto"
                     newState=card.data('state')==1?0:1;
                     datetime=dataHora();
+                    //post para enviar o novo estado do portão para a API
                     $.post("api/api.php", {'nome':card.attr("id"), 'valor':newState, 'hora':datetime})
                     .done(function(data){
+                        //atualiza o data-state atribute para o novo estado
                         card.data('state', newState);
                         if(data=="SUCCESS"){
+                            //se tiver sucesso altera os icons/texto e data
                             if(newState==1){
                                 card.find(".card-title").html("Aberto");
                                 card.find("div.icon-big").html('<i class="text-success fas fa-lock-open"></i>');
@@ -51,11 +59,16 @@
                     });
                 });
             <?php } ?>
-
-            setInterval(function(){ 
+            
+            //códigoc para, de 2 em 2 segundos, atualizar os valores de cada sensor na dashboard
+            setInterval(function(){
+                //vai buscar à api um json com os valores de cada sensor
                 $.get("api/api.php?allSensors", function(data){
+                    //faz o decode do json
                     data=JSON.parse(data);
+                    //percorre cada sensor no html para editar, 1 a 1, o seu valor
                     $.each(data,function(key,sensor){
+                        //condições para cada tipo de sensor, com base na informação a ser apresentada
                         if(sensor.sensor_id=="portao_principal"||sensor.sensor_id=="porta_cargas"||sensor.sensor_id=="porta_descargas"){
                             if(sensor.value==1){
                                 $("#"+sensor.sensor_id).find(".card-title").html("Aberto");
@@ -87,9 +100,11 @@
                                 $("#"+sensor.sensor_id).find(".card-title").html('Fechada');
                             }
                         }
+                        //atualiza a data
                         $("#"+sensor.sensor_id).find(".dashboard-cards-hora").html(sensor.datetime);
                     });
                 });
+                //Aqui é atualizado também o gráfico, através da API, quando recebe os dados, faz update ao gráfico, com os novos dados
                 $.get("api/api.php?historicoTemperatura", function(data){
                     newData = {
                         labels: ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",],
@@ -99,47 +114,40 @@
                 })
             }, 2000);
 
-            // Our labels and three data series
+            //inicialização do gráfico
             var data = {
-            labels: ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",],
-            series: [<?= file_get_contents("http://localhost:8888/projetoTI/api/api.php?historicoTemperatura");?>]
+                labels: ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",],
+                series: [<?= file_get_contents("http://localhost:8888/projetoTI/api/api.php?historicoTemperatura");?>]
             };
-
-            // We are setting a few options for our chart and override the defaults
+            // Opções do gráfico
             var options = {
-            height: '800px',
-            // X-Axis specific configuration
-            axisX: {
-                // We can disable the grid for this axis
-                showGrid: false,
-                // and also don't show the label
-                showLabel: true
-            },
-            // Y-Axis specific configuration
-            axisY: {  
-                // Lets offset the chart a bit from the labels
-                offset: 100,
-                // The label interpolation function enables you to modify the values
-                // used for the labels on each axis. Here we are converting the
-                // values into million pound.
-                labelInterpolationFnc: function(value) {
-                return value + ' Cº';
+                height: '800px',
+                axisX: {
+                    showGrid: false,
+                    showLabel: false
+                },
+                axisY: {  
+                    offset: 100,
+                    labelInterpolationFnc: function(value) {
+                        return value + ' Cº';
+                    }
                 }
-            }
             };
-
-            // All you need to do is pass your configuration as third parameter to the chart function
+            //inicializar o gráfico
             chartTemperatura=new Chartist.Line('.ct-chart', data, options);
 
-
+            //ação do botão para tirar nova foto na receção
             $("#newPhoto").on("click", function(){
+                //simula uma alteração do estado movimento_rececao para 1, para o python tirar a foto
                 $.post("api/api.php", {'nome':"movimento_rececao", 'valor':1, 'hora':dataHora()})
                     .done(function(data){
                         if(data=="SUCCESS"){
+                            //quando tuver success, espera 4 segundos e faz post para voltar a colocar a 0, o estado do kovimento
                             setTimeout(() => { 
                                 $.post("api/api.php", {'nome':"movimento_rececao", 'valor':0, 'hora':dataHora()})
                                 .done(function(data){
                                     console.log(data)
+                                    //quando concluido, atualiza a página para visualizar a nova foto
                                     location.reload();
                                 });
                             }, 4000);
@@ -148,6 +156,7 @@
             });
         });
 
+        //função standard para formatar a data e hora, em js
         function dataHora(){
             var dateISO=new Date().toISOString();
             var data0 = dateISO.split('T')[0];

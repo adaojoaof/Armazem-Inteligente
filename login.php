@@ -1,22 +1,26 @@
 <?php
-
+//inicia a SESSION
 session_start();
 include("database-config.php");
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
+    //valida a existencia deste campos
     if(isset($_POST['username']) && isset($_POST['password'])){
         $conn = new mysqli($servername, $username, $password, $dbname);
-        // Check connection
+        // verifica a conexão
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
+        //para evitar o SQL injection
         $loginUsername = mysqli_real_escape_string($conn,$_POST['username']);
         $loginPassword = mysqli_real_escape_string($conn,$_POST['password']); 
         
+        //é utilizado o md5() para cifrar a password
         $sql = "SELECT name, rule FROM users WHERE username = '$loginUsername' and password = '".md5($loginPassword)."'";
         $resultLogin = $conn->query($sql);
         $conn->close();
         
+        //se retornar um registo é porque está ok! e por isso guarda na session o username e a rule associada a ele e redireciona para a dashboard
         if($resultLogin->num_rows == 1) {
             $data=$resultLogin->fetch_assoc();
             $_SESSION["username"]=$data['name'];

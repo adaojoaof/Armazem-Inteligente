@@ -3,6 +3,7 @@ $pageTitle = "Histórico de Imagens capturadas na Receção";
 $activePage = "historico-imagens";
 $rules=['admin'];
 
+//função para conectar à base de dados
 function connectDatabse(){
     include("database-config.php");
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -12,12 +13,13 @@ function connectDatabse(){
     return $conn;
 }
 
+//recebe as imagens de acessos na receção
 $conn=connectDatabse();
 $sql = "SELECT * FROM `images` order by datetime desc limit 10";
 $resultImages = $conn->query($sql);
 $conn->close();
 
-//array com os sensores no armazém -> sensores.txt
+//array com as imagens de acessos na receção
 $images=[];
 while($row=$resultImages->fetch_assoc()){
     $images[]=$row;
@@ -31,6 +33,7 @@ while($row=$resultImages->fetch_assoc()){
         <div class="card-stats card">
             <div class="card-body">
                 <?php
+                //só mostra a tabela se existirem dados
                 if (count($images) > 0) {
                 ?>
                     <div class="table-responsive">
@@ -47,6 +50,7 @@ while($row=$resultImages->fetch_assoc()){
                                 ?>
                                     <tr>
                                         <td><?= $value['datetime'] ?></td>
+                                        <!-- mostra a imagem -->
                                         <td><img class="img-fluid" style="height: 100px;" src="images/<?= $value['name'] ?>" alt=""></td>
                                     </tr>
                                 <?php } ?>

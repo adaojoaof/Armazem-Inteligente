@@ -2,6 +2,7 @@
 $pageTitle = "Histórico";
 $activePage = "historico";
 
+//função para conectar à base de dados
 function connectDatabse(){
     include("database-config.php");
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -11,12 +12,13 @@ function connectDatabse(){
     return $conn;
 }
 
+//recebe os sensores
 $conn=connectDatabse();
 $sql = "SELECT * FROM sensores order by id";
 $resultSensores = $conn->query($sql);
 $conn->close();
 
-//array com os sensores no armazém -> sensores.txt
+//array com os sensores no armazém
 $sensores=[];
 while($row=$resultSensores->fetch_assoc()){
     $sensores[$row['id']]=$row;
@@ -29,6 +31,7 @@ while($row=$resultSensores->fetch_assoc()){
     <div class="col-md-3 col-sm-5 col-12 mb-4">
         <h5>Selecione o Sensor:</h5>
         <div class="list-group">
+            <!-- Cria a lista de sensores para posteriormente o utilizador selecionar qual o historico que quer ver -->
             <?php foreach ($sensores as $key => $value) { ?>
                 <a href="historico.php?sensor=<?= $key ?>" class="<?= isset($_GET['sensor'])&&$_GET['sensor']==$key?"active":"" ?> list-group-item list-group-item-action"><?= $value['name'] ?></a>
             <?php } ?>
@@ -45,6 +48,7 @@ while($row=$resultSensores->fetch_assoc()){
                     </div>
                     <div class="card-body">
                         <?php
+                        //Aqui vai recolher os valores [no máximo 100] do sensor pretendido, passado por get, que o user escolheu na listagem acima
                         $conn=connectDatabse();
                         $sensor = mysqli_real_escape_string($conn,$_GET['sensor']);
                         $sql = "SELECT * FROM historico_sensores where sensor_id='$sensor' order by datetime desc limit 100";
@@ -54,6 +58,7 @@ while($row=$resultSensores->fetch_assoc()){
                         while($row=$resultHistorico->fetch_assoc()){
                             $historico[$row['id']]=$row;
                         }
+                        //só mostra a tabela se existirem dados a apresentar
                         if (count($historico) > 0) {
                         ?>
                             <div class="table-responsive">
@@ -74,6 +79,7 @@ while($row=$resultSensores->fetch_assoc()){
                                                 <td><?= explode(" ",$value['datetime'])[1] ?></td>
                                                 <td>
                                                     <?php
+                                                        // Estas consições servem para apresentar os dados com base no tipo de sensor
                                                         if($value['sensor_id']=="portao_principal"||$value['sensor_id']=="porta_cargas"||$value['sensor_id']=="porta_descargas"){
                                                             if($value['value']==1){?>
                                                                 <i class="text-success fas fa-lock-open"></i>

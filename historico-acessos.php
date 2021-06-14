@@ -3,6 +3,7 @@ $pageTitle = "Histórico de Acessos ao Armazém";
 $activePage = "historico-acessos";
 $rules=['admin', 'driver'];
 
+//função para conectar à base de dados
 function connectDatabse(){
     include("database-config.php");
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -12,14 +13,15 @@ function connectDatabse(){
     return $conn;
 }
 
+//recebe os logs de acessos
 $conn=connectDatabse();
 $sql = "SELECT datetime, name, result FROM log_acessos_armazem inner join users on users.username=log_acessos_armazem.username order by datetime desc limit 50";
-$resultHistorico = $conn->query($sql);
+$resultLogs = $conn->query($sql);
 $conn->close();
 
-//array com os sensores no armazém -> sensores.txt
+//array com os logs e acessos
 $logs=[];
-while($row=$resultHistorico->fetch_assoc()){
+while($row=$resultLogs->fetch_assoc()){
     $logs[]=$row;
 }
 ?>
@@ -31,6 +33,7 @@ while($row=$resultHistorico->fetch_assoc()){
         <div class="card-stats card">
             <div class="card-body">
                 <?php
+                //só mostra a tabela se existirem dados
                 if (count($logs) > 0) {
                 ?>
                     <div class="table-responsive">

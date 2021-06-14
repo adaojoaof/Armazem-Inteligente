@@ -2,7 +2,7 @@
 $pageTitle = "Dashboard";
 $activePage = "dashboard";
 
-
+//recebe todos os dados, prontos para irem para colocar na dashboard
 $temperatura = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=temperatura"));
 $humidade = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=humidade"));
 $vento = json_decode(file_get_contents("http://localhost:8888/projetoTI/api/api.php?sensor=detetor_vento"));
@@ -28,9 +28,11 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
             <p class="card-category">Estado dos Portões</p>
          </div>
          <div class="card-body">
+
             <div class="row porta-icon" id="portao_principal" data-state="<?= $portao_principal->value?>">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning <?php if($_SESSION['rules']=="admin"){ echo "pointer";} ?>">
+                  <div class="icon-big text-center icon-warning <?php if($_SESSION['rules']=="admin"||$_SESSION['rules']=="driver"){ echo "pointer";} //serve para, com base nas rules, ser permitido clicar ou não?>">
+                     <!-- Condição para mostrar o icon aberto ou fechado -->
                      <?php if ($portao_principal->value == 1) { ?>
                         <i class="text-success fas fa-lock-open"></i>
                      <?php } else { ?>
@@ -41,14 +43,17 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Portão Principal</p>
+                     <!-- operador trenário para mostrar o texto aberto ou fechado -->
                      <h4 class="card-title"> <?= $portao_principal->value == 1 ? "Aberto" : "Fechado" ?> </h4>
                      <p class="dashboard-cards-hora"><?= $portao_principal->datetime ?></p>
                   </div>
                </div>
             </div>
+
             <div class="row porta-icon" id="porta_cargas" data-state="<?= $porta_cargas->value?>">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning <?php if($_SESSION['rules']=="admin"){ echo "pointer";} ?>">
+                  <div class="icon-big text-center icon-warning <?php if($_SESSION['rules']=="admin"||$_SESSION['rules']=="driver"){ echo "pointer";} ?>">
+                     <!-- Condição para mostrar o icon aberto ou fechado -->
                      <?php if ($porta_cargas->value == 1) { ?>
                         <i class="text-success fas fa-lock-open"></i>
                      <?php } else { ?>
@@ -59,14 +64,17 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Portão Cargas</p>
+                     <!-- operador trenário para mostrar o texto aberto ou fechado -->
                      <h4 class="card-title"> <?= $porta_cargas->value == 1 ? "Aberto" : "Fechado" ?> </h4>
                      <p class="dashboard-cards-hora"><?= $porta_cargas->datetime ?></p>
                   </div>
                </div>
             </div>
+
             <div class="row porta-icon" id="porta_descargas" data-state="<?= $porta_descargas->value?>">
                <div class="col-4">
-                  <div class="icon-big text-center icon-warning <?php if($_SESSION['rules']=="admin"){ echo "pointer";} ?>">
+                  <div class="icon-big text-center icon-warning <?php if($_SESSION['rules']=="admin"||$_SESSION['rules']=="driver"){ echo "pointer";} ?>">
+                     <!-- Condição para mostrar o icon aberto ou fechado -->
                      <?php if ($porta_descargas->value == 1) { ?>
                         <i class="text-success fas fa-lock-open"></i>
                      <?php } else { ?>
@@ -77,6 +85,7 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Portão Descargas</p>
+                     <!-- operador trenário para mostrar o texto aberto ou fechado -->
                      <h4 class="card-title"> <?= $porta_descargas->value == 1 ? "Aberto" : "Fechado" ?> </h4>
                      <p class="dashboard-cards-hora"><?= $porta_descargas->datetime ?></p>
                   </div>
@@ -99,6 +108,7 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Temperatura</p>
+                     
                      <h4 class="card-title"><span class="value-in"><?php echo $temperatura->value ?></span> Cº <span class="arrow-state"></span></h4>
                      <p class="dashboard-cards-hora"><?= $temperatura->datetime ?></p>
                   </div>
@@ -145,6 +155,7 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Janela Norte</p>
+                     <!-- Condição para escrever aberta ou fechada -->
                      <h4 class="card-title"><?php echo $janelaNorte->value == 1 ? "Aberta" : "Fechada" ?></h4>
                      <p class="dashboard-cards-hora"><?= $janelaNorte->datetime ?></p>
                   </div>
@@ -157,6 +168,7 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
                <div class="col-8">
                   <div class="numbers">
                      <p class="card-category">Janela Sul</p>
+                     <!-- Condição para escrever aberta ou fechada -->
                      <h4 class="card-title"><?php echo $janelaSul->value == 1 ? "Aberta" : "Fechada" ?></h4>
                      <p class="dashboard-cards-hora"><?= $janelaSul->datetime ?></p>
                   </div>
@@ -177,6 +189,7 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
                   <!-- Mostra a ultima imagem registada na receção -->
                   <img class="img-fluid" src="images/<?php echo $imagem->name ?>" alt="">
                   <p class="dashboard-cards-hora mb-1"><?= $imagem->datetime ?></p>
+                  <!-- se for administrador, mostra o botão para capturar nova foto -->
                   <?php if($_SESSION['rules']=='admin') { ?>
                      <button id="newPhoto" type="button" class="btn btn-sm btn-primary">Nova foto</button>
                   <?php } ?>
@@ -192,9 +205,8 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
             <p class="card-category"></p>
          </div>
          <div class="card-body">
-            <div class="ct-chart ct-perfect-fourth">
-               
-            </div>
+            <!-- neste div vai ser mostrado o gráfico, por javascript -->
+            <div class="ct-chart ct-perfect-fourth"></div>
          </div>
       </div>
    </div>
