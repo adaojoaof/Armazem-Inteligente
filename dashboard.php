@@ -204,7 +204,7 @@ $porta_cargas = json_decode(file_get_contents("http://localhost:8888/projetoTI/a
             <h4 class="card-title">Histórico das Temperaturas</h4>
             <p class="card-category"></p>
          </div>
-         <div class="card-body">
+         <div class="card-body" style="height: 300px;">
             <!-- neste div vai ser mostrado o gráfico, por javascript -->
             <div class="ct-chart ct-perfect-fourth"></div>
          </div>

@@ -80,7 +80,7 @@
                         }
                         else if(sensor.sensor_id=="humidade"||sensor.sensor_id=="temperatura"){
                             $("#"+sensor.sensor_id).find(".card-title .value-in").html(sensor.value);
-                            oldValue=$("#"+sensor.sensor_id).data("value");
+                            oldValue=parseFloat($("#"+sensor.sensor_id).data("value"));
                             if(oldValue>sensor.value){
                                 $("#"+sensor.sensor_id).find(".arrow-state").html('<i class="fas fa-arrow-down"></i>');
                             }else if(oldValue<sensor.value){
@@ -121,7 +121,7 @@
             };
             // Opções do gráfico
             var options = {
-                height: '800px',
+                height: '80%',
                 axisX: {
                     showGrid: false,
                     showLabel: false
